@@ -45,7 +45,7 @@ class Seat(models.Model):
     price=models.DecimalField(max_digits=6,decimal_places=2)
 
     class Meta:
-        unique_together=("screen","seat_numer")
+        unique_together=("screen","seat_number")
 
 
     def __str__(self):
