@@ -51,9 +51,9 @@ class Seat(models.Model):
     def __str__(self):
         return f"{self.screen.name}-{self.seat_number}"
 
-class show(models.Model):
-    movie=models.ForeignKey(Movie,on_delete=models.CASCADE)
-    Screen =models.ForeignKey(Screen,on_delete=models.CASCADE)
+class Show(models.Model):
+    movie=models.ForeignKey(Movie,on_delete=models.CASCADE,related_name='shows')
+    screen =models.ForeignKey(Screen,on_delete=models.CASCADE,related_name='shows')
     start_time=models.DateTimeField()
     end_time=models.DateTimeField()
 
@@ -66,7 +66,7 @@ class Booking(models.Model):
                     ("CANCELLED","Cancelled"),
                     )
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    show=models.ForeignKey(show,on_delete=models.CASCADE)
+    show=models.ForeignKey(Show,on_delete=models.CASCADE)
     booking_time=models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=50,choices=BOOKING_STATUS)
     total_amount=models.DecimalField(max_digits=8,decimal_places=3)
@@ -87,7 +87,7 @@ class Payment(models.Model):
                     ("FAILED","Failed"),
                     ("PENDING","Pending"),
                     )
-    booking=models.ForeignKey(Booking,on_delete=models.CASCADE)
+    booking=models.OneToOneField(Booking,on_delete=models.CASCADE)
     payment_id=models.CharField(max_length=100)
     amount=models.DecimalField(max_digits=8,decimal_places=4)
     status=models.CharField(max_length=50,choices=PAYMENT_CHOICE)
